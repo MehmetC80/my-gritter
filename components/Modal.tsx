@@ -48,9 +48,9 @@ const Modal: React.FC<ModalProps> = ({
     <>
       <div
         className='
-      flex
-      items-center
-      justify-center
+        flex
+        items-center
+        justify-center
       overflow-x-hidden
       overflow-y-auto
       fixed
@@ -79,6 +79,7 @@ const Modal: React.FC<ModalProps> = ({
             className='
             h-full
             w-full
+            p-6
             lg:h-auto
             border-0
             rounded-lg
