@@ -3,19 +3,21 @@ import { format } from 'date-fns';
 
 import useUser from '@/hooks/useUser';
 
-import Avatar from '../Avatar';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import { useRouter } from 'next/router';
+
 import Button from '../ui/Button';
 import { BiCalendar } from 'react-icons/bi';
+import useEditUserModal from '@/hooks/useEditUser.Modal';
 
 interface UserBioProps {
   userId: string;
 }
 
 const UserBio: React.FC<UserBioProps> = ({ userId }) => {
-  const { data: CurrentUser } = useCurrentUser();
+  const { data: currentUser } = useCurrentUser();
   const { data: fetchedUser } = useUser(userId);
+
+  const editUserModal = useEditUserModal();
 
   const createdAt = useMemo(() => {
     if (!fetchedUser?.createdAt) {
@@ -27,8 +29,8 @@ const UserBio: React.FC<UserBioProps> = ({ userId }) => {
   return (
     <div className='border-b-[1px] border-neutral-700 pb-4'>
       <div className=' flex justify-end  p-2'>
-        {CurrentUser?.id === userId ? (
-          <Button secondary label='Edit' onClick={() => {}} />
+        {currentUser?.id === userId ? (
+          <Button secondary label='Edit' onClick={editUserModal.onOpen} />
         ) : (
           <Button label='Follow' onClick={() => {}} secondary />
         )}

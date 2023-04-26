@@ -5,11 +5,13 @@ import LoginModal from '@/components/modals/LoginModal';
 import RegisterModal from '@/components/modals/RegisterModal';
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
+import EditUserModal from '@/components/modals/EditUserModal';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
       <Toaster />
+      <EditUserModal />
       <RegisterModal />
       <LoginModal />
       <Layout>
