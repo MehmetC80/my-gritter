@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import prismadb from '@/libs/prismadb';
-import bcrypt from 'bcrypt';
+
 import serverAuth from '@/libs/serverAuth';
 
 export default async function handler(
@@ -12,7 +11,7 @@ export default async function handler(
   }
 
   try {
-    const { currentUser } = await serverAuth(req);
+    const { currentUser } = await serverAuth(req, res);
 
     return res.status(200).json(currentUser);
   } catch (err) {

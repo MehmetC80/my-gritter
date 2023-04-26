@@ -8,11 +8,11 @@ export default async function handler(
 ) {
   try {
     if (req.method !== 'PATCH') {
-      return res.status(405).json({ errorMsg: 'This methode is not allowd' });
+      return res.status(405).end();
     }
 
     // get authenticated currentUser from request
-    const { currentUser } = await serverAuth(req);
+    const { currentUser } = await serverAuth(req, res);
 
     // get all field from request to update
     const { name, username, bio, profilImage, coverImage } = req.body;
