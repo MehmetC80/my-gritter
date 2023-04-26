@@ -3,6 +3,7 @@ import react, { useCallback, useState } from 'react';
 import Input from '../ui/Input';
 import Modal from '../Modal';
 import useRegisterModal from '@/hooks/useRegisterModal';
+import { signIn } from 'next-auth/react';
 
 const LoginModal = () => {
   const loginModal = useLoginModal();
@@ -23,7 +24,12 @@ const LoginModal = () => {
 
   const onSubmit = useCallback(async () => {
     try {
-      // code
+      //  login user
+
+      await signIn('credentials', {
+        email,
+        password,
+      });
 
       loginModal.onClose;
     } catch (err) {
@@ -31,7 +37,7 @@ const LoginModal = () => {
     } finally {
       setIsloading(false);
     }
-  }, [loginModal]);
+  }, [loginModal, email, password]);
 
   // body content
   const bodyContent = (
