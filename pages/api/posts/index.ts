@@ -13,7 +13,6 @@ export default async function handler(
   try {
     if (req.method === 'POST') {
       const { currentUser } = await serverAuth(req, res);
-
       const { body } = req.body;
 
       const post = await prismadb.post.create({
@@ -28,6 +27,8 @@ export default async function handler(
 
     if (req.method === 'GET') {
       const { userId } = req.query;
+
+      console.log({ userId });
 
       let posts;
 
@@ -58,8 +59,8 @@ export default async function handler(
 
       return res.status(200).json(posts);
     }
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     return res.status(400).end();
   }
 }
