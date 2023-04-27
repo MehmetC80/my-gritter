@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import prismadb from '@/libs/prismadb';
+
+import prisma from '@/libs/prismadb';
 import serverAuth from '@/libs/serverAuth';
 
 export default async function handler(
@@ -19,7 +20,7 @@ export default async function handler(
       throw new Error('Invalid ID');
     }
 
-    const user = await prismadb.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: userId,
       },
@@ -33,6 +34,28 @@ export default async function handler(
 
     if (req.method === 'POST') {
       updatedFollowingIds.push(userId);
+
+      // NOTIFICATION PART START
+      try {
+        await prisma.notification.create({
+          data: {
+            body: 'Someone followed you!',
+            userId,
+          },
+        });
+
+        await prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            hasNotification: true,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      // NOTIFICATION PART END
     }
 
     if (req.method === 'DELETE') {
@@ -41,7 +64,7 @@ export default async function handler(
       );
     }
 
-    const updatedUser = await prismadb.user.update({
+    const updatedUser = await prisma.user.update({
       where: {
         id: currentUser.id,
       },
@@ -51,8 +74,8 @@ export default async function handler(
     });
 
     return res.status(200).json(updatedUser);
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     return res.status(400).end();
   }
 }

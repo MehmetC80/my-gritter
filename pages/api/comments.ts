@@ -32,6 +32,34 @@ export default async function handler(
       },
     });
 
+    try {
+      const post = await prismadb.post.findUnique({
+        where: {
+          id: postId,
+        },
+      });
+
+      if (post?.userId) {
+        await prismadb.notification.create({
+          data: {
+            body: 'Someone liked your tweet!',
+            userId: post.userId,
+          },
+        });
+
+        await prismadb.user.update({
+          where: {
+            id: post.userId,
+          },
+          data: {
+            hasNotification: true,
+          },
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
     return res.status(200).json(comment);
   } catch (err) {
     console.log(err);

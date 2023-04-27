@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+
 import fetcher from '@/libs/fetcher';
 
 const useUsers = () => {
@@ -11,4 +12,5 @@ const useUsers = () => {
     mutate,
   };
 };
+
 export default useUsers;
